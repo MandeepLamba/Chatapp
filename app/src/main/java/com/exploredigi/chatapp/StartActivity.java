@@ -12,20 +12,24 @@ import com.google.firebase.auth.FirebaseUser;
 public class StartActivity extends AppCompatActivity {
 
     Button login,register;
-
     FirebaseUser firebaseUser;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseUser!=null){
+            startActivity(new Intent(StartActivity.this,MainActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(firebaseUser!=null){
-            startActivity(new Intent(StartActivity.this,MainActivity.class));
-            finish();
-        }
         login = (Button) findViewById(R.id.login_button);
         register = (Button) findViewById(R.id.register_button);
 
@@ -39,7 +43,7 @@ public class StartActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(StartActivity.this,RagisterActivity.class));
+                startActivity(new Intent(StartActivity.this,RegisterActivity.class));
             }
         });
     }

@@ -21,10 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-public class RagisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     EditText name,email,pass;
-    Button register_button;
+    Button register;
 
     FirebaseAuth auth;
     DatabaseReference reference;
@@ -43,23 +43,25 @@ public class RagisterActivity extends AppCompatActivity {
         name = (EditText) findViewById(R.id.username);
         email = (EditText) findViewById(R.id.email);
         pass = (EditText) findViewById(R.id.pass);
-        register_button = (Button) findViewById(R.id.register_button);
+        register = (Button) findViewById(R.id.register_button);
         auth = FirebaseAuth.getInstance();
 
-        register_button.setOnClickListener(new View.OnClickListener() {
+        register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name_string = name.getText().toString().trim();
                 String email_string = email.getText().toString();
-                String pass_string = pass.toString();
+                String pass_string = pass.getText().toString();
                 if (TextUtils.isEmpty(name_string)||TextUtils.isEmpty(email_string)||TextUtils.isEmpty(pass_string)){
-                    Toast.makeText(RagisterActivity.this, "You have to fill all field", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "You have to fill all field", Toast.LENGTH_SHORT).show();
                 }
-                else if(pass_string.length()<6){
-                    Toast.makeText(RagisterActivity.this, "Password length must > 6", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    register(name_string,email_string,pass_string);
+                else{
+                    if(pass_string.length() < 6){
+                        Toast.makeText(RegisterActivity.this, "Password length must > 6", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        register(name_string,email_string,pass_string);
+                    }
                 }
             }
         });
@@ -85,7 +87,7 @@ public class RagisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Intent intent = new Intent(RagisterActivity.this,MainActivity.class);
+                                        Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                         finish();
@@ -96,7 +98,7 @@ public class RagisterActivity extends AppCompatActivity {
                         }
                         else{
 
-                            Toast.makeText(RagisterActivity.this, "You can't register with this email and password"+task.getException().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, "You can't register with this email and password"+task.getException().toString(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
