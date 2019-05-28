@@ -1,5 +1,6 @@
 package com.exploredigi.chatapp.Adapter;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.exploredigi.chatapp.MessageActivity;
 import com.exploredigi.chatapp.Model.User;
 import com.exploredigi.chatapp.R;
 
@@ -33,15 +35,23 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i){
-        User user = m_users.get(i);
+        final User user = m_users.get(i);
         viewHolder.username.setText(user.getUsername());
         if(user.getImageURL().equals("default")){
             viewHolder.profile_image.setImageResource(R.mipmap.ic_launcher);
         }
         else {
             Glide.with(m_context).load(user.getImageURL()).into(viewHolder.profile_image);
-
         }
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(m_context,MessageActivity.class);
+                intent.putExtra("userid",user.getId());
+                m_context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -57,10 +67,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             username = itemView.findViewById(R.id.username);
             profile_image = itemView.findViewById(R.id.profile_image);
         }
-
     }
 }
