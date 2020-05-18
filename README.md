@@ -1,3 +1,3 @@
 # Chatapp
-This project is to try creating an chatting app for android.
+This project is an chatting app for android.
 
